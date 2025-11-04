@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Layout для экрана профиля пользователя.
+    
+    TODO (Домашнее задание): Создайте layout для ProfileActivity со следующими элементами:
+    
+    1. Вертикальный LinearLayout (padding 16dp)
+    2. TextView для приветствия "Привет, [Имя]!" (изначально gone)
+    3. EditText для имени (hint: "Введите ваше имя")
+    4. EditText для возраста (hint: "Введите возраст", inputType: number)
+    5. TextView "Любимый жанр"
+    6. Spinner для выбора жанра
+    7. TextView для ошибки жанра (textColor: red, изначально gone)
+    8. EditText для "О себе" (hint: "Расскажите о себе", multiline, minLines: 3)
+    9. Space с layout_weight="1" (для push кнопок вниз)
+    10. TextView для версии приложения
+    11. Горизонтальный LinearLayout с кнопками "Отмена" и "Сохранить"
+    
+    ВАЖНО: Используйте LinearLayout и FrameLayout, НЕ ConstraintLayout!
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ProfileActivity">
+
+    <!-- TODO: Добавьте TextView для приветствия -->
+    
+    <!-- TODO: Добавьте EditText для имени -->
+    
+    <!-- TODO: Добавьте EditText для возраста -->
+    
+    <!-- TODO: Добавьте TextView "Любимый жанр" -->
+    
+    <!-- TODO: Добавьте Spinner для выбора жанра -->
+    
+    <!-- TODO: Добавьте TextView для ошибки валидации жанра -->
+    
+    <!-- TODO: Добавьте EditText для "О себе" (multiline) -->
+    
+    <!-- TODO: Добавьте Space для push кнопок вниз -->
+    
+    <!-- TODO: Добавьте TextView для версии приложения -->
+    
+    <!-- TODO: Добавьте LinearLayout с кнопками -->
+
+</LinearLayout>
