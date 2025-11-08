@@ -77,7 +77,7 @@ class MovieDetailActivity : AppCompatActivity() {
         descriptionTextView = findViewById(R.id.descriptionTextView)
         ratingTextView = findViewById(R.id.ratingTextView)
         moreInfoButton = findViewById(R.id.moreInfoButton)
-        
+        randomButton = findViewById(R.id.randomMovieButton)
         currentMovie = MovieRepository.getRandomMovie()
         Log.d(TAG, "First launch: loading random movie")
 
@@ -86,6 +86,7 @@ class MovieDetailActivity : AppCompatActivity() {
         
         // Настройка обработчиков кликов
         setupClickListeners()
+        setupRandomButtonListener()
     }
     
     /**
@@ -247,6 +248,39 @@ class MovieDetailActivity : AppCompatActivity() {
                     Log.w(TAG, "No app found to handle URL")
                 }
             }
+        }
+    }
+    private fun getRandomMovie(): Movie {
+        val allMovies = MovieRepository.movies
+
+        if (currentMovie == null) {
+            return allMovies.random()
+        }
+
+        val availableMovies = allMovies.filter { movie ->
+            movie.id != currentMovie!!.id
+        }
+
+        return if (availableMovies.isNotEmpty()) {
+            availableMovies.random()
+        } else {
+            allMovies.random()
+        }
+    }
+    private fun setupRandomButtonListener() {
+        randomButton.setOnClickListener {
+            Log.d(TAG, "Random movie button clicked")
+
+            val previousMovie = currentMovie?.title ?: "нет фильма"
+
+            currentMovie = getRandomMovie()
+
+            displayMovie(currentMovie)
+
+            val newMovie = currentMovie?.title ?: "нет фильма"
+            Log.d(TAG, "Смена фильма. $previousMovie $newMovie")
+
+            Toast.makeText(this, "Фильм изменен!", Toast.LENGTH_SHORT).show()
         }
     }
 
