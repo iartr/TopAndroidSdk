@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 
@@ -37,6 +38,8 @@ class MovieDetailActivity : AppCompatActivity() {
     
     // Текущий отображаемый фильм
     private var currentMovie: Movie? = null
+
+    private val viewModel: MovieViewModel by viewModels()
     
     // UI элементы (findViewById возвращает View, приводим к конкретному типу)
     private lateinit var titleTextView: TextView
@@ -45,6 +48,7 @@ class MovieDetailActivity : AppCompatActivity() {
     private lateinit var ratingTextView: TextView
     private lateinit var randomButton: Button
     private lateinit var moreInfoButton: Button
+
     
     /**
      * onCreate() — ПЕРВЫЙ метод жизненного цикла при создании Activity.
@@ -87,6 +91,7 @@ class MovieDetailActivity : AppCompatActivity() {
         // Настройка обработчиков кликов
         setupClickListeners()
         setupRandomButtonListener()
+
     }
     
     /**
