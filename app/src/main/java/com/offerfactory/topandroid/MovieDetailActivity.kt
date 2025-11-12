@@ -29,14 +29,11 @@ import androidx.core.net.toUri
 class MovieDetailActivity : AppCompatActivity() {
     
     companion object {
-        // Тег для логирования — удобно фильтровать логи в Logcat
         private const val TAG = "MovieDetailActivity"
         
-        // Ключи для сохранения состояния в Bundle
         private const val KEY_MOVIE_ID = "movie_id"
     }
-    
-    // Текущий отображаемый фильм
+
     private var currentMovie: Movie? = null
 
     private val viewModel: MovieViewModel by viewModels()
@@ -65,10 +62,10 @@ class MovieDetailActivity : AppCompatActivity() {
      * при пересоздании Activity (например, при повороте экрана).
      */
     override fun onCreate(savedInstanceState: Bundle?) {
-        // ВСЕГДА вызываем super ПЕРВЫМ!
+
         super.onCreate(savedInstanceState)
-        
-        Log.d(TAG, "onCreate called")
+
+        Log.d(TAG, "onCreate called, savedInstanceState: $savedInstanceState")
         
         // Устанавливаем layout для этой Activity
         // R.layout.activity_movie_detail ссылается на res/layout/activity_movie_detail.xml
@@ -84,6 +81,19 @@ class MovieDetailActivity : AppCompatActivity() {
         randomButton = findViewById(R.id.randomMovieButton)
         currentMovie = MovieRepository.getRandomMovie()
         Log.d(TAG, "First launch: loading random movie")
+
+        if (savedInstanceState != null) {
+            val savedMovieId = savedInstanceState.getInt(KEY_MOVIE_ID, -1)
+            if (savedMovieId != -1) {
+                currentMovie = MovieRepository.movies.find { it.id == savedMovieId }
+                Log.d(TAG, "Restored movie from saved state: ${currentMovie?.title}")
+            }
+        }
+
+        if (currentMovie == null) {
+            currentMovie = MovieRepository.getRandomMovie()
+            Log.d(TAG, "First launch: loading random movie")
+        }
 
         // Отображаем информацию о фильме
         displayMovie(currentMovie)
@@ -219,6 +229,16 @@ class MovieDetailActivity : AppCompatActivity() {
             infoTextView.text = "${it.year} • ${it.genre} • ${it.duration}"
             descriptionTextView.text = it.description
             ratingTextView.text = it.rating.toString()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d(TAG, "onSaveInstanceState called")
+
+        currentMovie?.let { movie ->
+            outState.putInt(KEY_MOVIE_ID, movie.id)
+            Log.d(TAG, "Saved movie ID: ${movie.id} (${movie.title})")
         }
     }
     
