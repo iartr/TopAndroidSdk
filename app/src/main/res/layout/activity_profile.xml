@@ -26,24 +26,127 @@
     android:padding="16dp"
     tools:context=".ProfileActivity">
 
-    <!-- TODO: Добавьте TextView для приветствия -->
-    
-    <!-- TODO: Добавьте EditText для имени -->
-    
-    <!-- TODO: Добавьте EditText для возраста -->
-    
-    <!-- TODO: Добавьте TextView "Любимый жанр" -->
-    
-    <!-- TODO: Добавьте Spinner для выбора жанра -->
-    
-    <!-- TODO: Добавьте TextView для ошибки валидации жанра -->
-    
-    <!-- TODO: Добавьте EditText для "О себе" (multiline) -->
-    
-    <!-- TODO: Добавьте Space для push кнопок вниз -->
-    
-    <!-- TODO: Добавьте TextView для версии приложения -->
-    
-    <!-- TODO: Добавьте LinearLayout с кнопками -->
+        <TextView
+            android:id="@+id/greetingTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Привет, [Имя]!"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Имя"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите ваше имя" />
+
+        <TextView
+            android:id="@+id/nameErrorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Имя должно быть от 2 до 40 символов"
+            android:textColor="#FF0000"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Возраст"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/ageEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите возраст"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/ageErrorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Возраст должен быть от 10 до 120 лет"
+            android:textColor="#FF0000"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Любимый жанр"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <Spinner
+            android:id="@+id/genreSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/genreErrorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Пожалуйста, выберите жанр"
+            android:textColor="#FF0000"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="О себе"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/bioEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Расскажите о себе"
+            android:inputType="textMultiLine"
+            android:minLines="3" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/versionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Версия приложения: 1.0"
+            android:textColor="#666666" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Отмена" />
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Сохранить" />
+
+        </LinearLayout>
 
 </LinearLayout>

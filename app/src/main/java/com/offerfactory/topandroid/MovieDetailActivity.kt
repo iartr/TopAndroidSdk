@@ -253,9 +253,12 @@ class MovieDetailActivity : AppCompatActivity() {
             Log.d(TAG, "More info button clicked")
             
             currentMovie?.let { movie ->
-                // Создаём неявный Intent для открытия URL
-                // ACTION_VIEW — стандартное действие для просмотра содержимого
                 val intent = Intent(Intent.ACTION_VIEW, movie.kinopoiskUrl.toUri())
+                val profileButton = findViewById<Button>(R.id.profileButton)
+                profileButton.setOnClickListener {
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
+                }
                 
                 // ВАЖНО: Проверяем, что есть приложение для обработки Intent
                 // Без этой проверки приложение может упасть, если нет браузера

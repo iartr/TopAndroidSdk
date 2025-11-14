@@ -20,14 +20,5 @@
     <string name="version_format">Версия приложения: %s</string>
     <string name="greeting_format">Привет, %s!</string>
     <string name="favorite_genre">Любимый жанр</string>
-    
-    <!-- Genres -->
-    <string-array name="genres">
-        <item>Выберите жанр</item>
-        <item>Драма</item>
-        <item>Комедия</item>
-        <item>Боевик</item>
-        <item>Фантастика</item>
-        <item>Ужасы</item>
-    </string-array>
+
 </resources>
