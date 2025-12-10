@@ -1,6 +1,6 @@
 package com.offerfactory.topandroid
 
-data class Profile(
+data class Profile (
     val name: String,
     val age: Int,
     val genre: String,
