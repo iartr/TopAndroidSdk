@@ -119,4 +119,15 @@ object MovieRepository {
     fun findMovieById(id: Int): Movie? {
         return movies.find { it.id == id }
     }
+    fun getUserProfile(): Profile {
+        return Profile(
+            name = "Алексей",
+            age = 28,
+            genre = "Драма",
+            bio = "Люблю смотреть фильмы в свободное время. Предпочитаю качественное кино с интересным сюжетом."
+        )
+    }
+    fun loadDefaultProfile(): Profile {
+        return MovieRepository.getUserProfile()
+    }
 }

@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Layout для экрана детальной информации о фильме.
-    
-    Используем комбинацию LinearLayout и FrameLayout для создания структурированного UI:
-    - Внешний LinearLayout (vertical) — основной контейнер
-    - FrameLayout для наложения рейтинга поверх области постера
-    - Вложенный LinearLayout для контента
-    - Горизонтальный LinearLayout для кнопок
-    
-    Обратите внимание на использование:
-    - layout_weight для распределения пространства
-    - padding и margin для отступов
-    - gravity для выравнивания
--->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,96 +6,107 @@
     android:orientation="vertical"
     tools:context=".MovieDetailActivity">
 
-    <!-- 
-        Шапка с областью для постера и рейтингом.
-        FrameLayout позволяет наложить рейтинг поверх фона.
-    -->
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:background="#E0E0E0">
 
-        <!-- Заглушка для постера фильма (в реальном приложении здесь была бы ImageView с картинкой) -->
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#424242" />
 
-        <!-- 
-            Рейтинг фильма в правом верхнем углу.
-            layout_gravity позиционирует элемент внутри FrameLayout.
-        -->
         <TextView
             android:id="@+id/ratingTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:background="#CC000000"
-            android:padding="12dp"
+            android:padding="8dp"
             android:textColor="#FFD700"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:text="9.3" />
 
     </FrameLayout>
 
-    <!-- 
-        Контент с информацией о фильме.
-        layout_weight="1" заставляет этот LinearLayout занять всё свободное пространство
-        между шапкой и кнопками внизу.
-    -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="8dp">
 
-        <!-- Название фильма -->
-        <TextView
-            android:id="@+id/titleTextView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            tools:text="Побег из Шоушенка" />
+            android:orientation="vertical">
 
-        <!-- Год, жанр, длительность -->
-        <TextView
-            android:id="@+id/infoTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            tools:text="1994 • Драма • 2ч 22мин" />
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:text="Побег из Шоушенка" />
 
-        <!-- Описание фильма -->
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="14sp"
-            android:textColor="#000000"
-            android:lineSpacingMultiplier="1.2"
-            tools:text="Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены и её любовника..." />
+            <TextView
+                android:id="@+id/infoTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                tools:text="1994 • Драма • 2ч 22мин" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/descriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                tools:text="Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены и её любовника..." />
+
+        </LinearLayout>
+    </ScrollView>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="8dp"
+        android:weightSum="3">
 
-        <!-- Кнопка для открытия браузера с подробной информацией -->
+        <Button
+            android:id="@+id/randomMovieButton"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:textSize="12sp"
+            android:text="Случайный" />
+
+        <Button
+            android:id="@+id/profileButton"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:textSize="12sp"
+            android:text="Профиль" />
+
         <Button
             android:id="@+id/moreInfoButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:textSize="12sp"
             android:text="@string/more_info" />
 
     </LinearLayout>
