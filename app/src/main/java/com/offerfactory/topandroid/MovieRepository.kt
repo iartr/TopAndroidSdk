@@ -127,4 +127,7 @@ object MovieRepository {
             bio = "Люблю смотреть фильмы в свободное время. Предпочитаю качественное кино с интересным сюжетом."
         )
     }
+    fun loadDefaultProfile(): Profile {
+        return MovieRepository.getUserProfile()
+    }
 }

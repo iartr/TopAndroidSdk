@@ -26,7 +26,7 @@ class ProfileActivity : AppCompatActivity() {
         const val EXTRA_SAVED_NAME = "saved_name"
     }
 
-    // Объявляем UI элементы через findViewById
+
     private lateinit var nameEditText: EditText
     private lateinit var ageEditText: EditText
     private lateinit var genreSpinner: Spinner
@@ -45,16 +45,8 @@ class ProfileActivity : AppCompatActivity() {
 
         Log.d(TAG, "onCreate called")
 
-        initializeViews()
-        restoreState(savedInstanceState)
-        loadProfileData()
-        setupGenreSpinner()
-        setupTextWatchers()
-        setupClickListeners()
-        setVersionInfo()
-    }
+        ProfileRepository.init(this)
 
-    private fun initializeViews() {
         nameEditText = findViewById(R.id.nameEditText)
         ageEditText = findViewById(R.id.ageEditText)
         genreSpinner = findViewById(R.id.genreSpinner)
@@ -62,22 +54,27 @@ class ProfileActivity : AppCompatActivity() {
         versionTextView = findViewById(R.id.versionTextView)
         saveButton = findViewById(R.id.saveButton)
         cancelButton = findViewById(R.id.cancelButton)
-    }
 
-    private fun restoreState(savedInstanceState: Bundle?) {
-        savedInstanceState?.let { bundle ->
-            nameEditText.setText(bundle.getString(KEY_NAME, ""))
-            ageEditText.setText(bundle.getString(KEY_AGE, ""))
-            bioEditText.setText(bundle.getString(KEY_BIO, ""))
-        }
+        loadProfileData()
+        setupGenreSpinner()
+        setupTextWatchers()
+        setupClickListeners()
+        setVersionInfo()
     }
 
     private fun loadProfileData() {
-        val profile = ProfileRepository.getProfile() ?: ProfileRepository.loadDefaultProfile()
+        val profile = ProfileRepository.getProfile() ?: Profile(
+            name = "Гость",
+            age = 0,
+            genre = "Не указан",
+            bio = ""
+        )
 
         nameEditText.setText(profile.name)
         ageEditText.setText(profile.age.toString())
         bioEditText.setText(profile.bio)
+
+
 
         validateName(profile.name)
         validateAge(profile.age.toString())

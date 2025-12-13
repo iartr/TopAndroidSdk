@@ -6,9 +6,10 @@
     android:orientation="vertical"
     tools:context=".MovieDetailActivity">
 
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:background="#E0E0E0">
 
         <View
@@ -21,11 +22,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:background="#CC000000"
-            android:padding="12dp"
+            android:padding="8dp"
             android:textColor="#FFD700"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:text="9.3" />
 
@@ -34,20 +35,20 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/titleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 tools:text="Побег из Шоушенка" />
 
@@ -55,8 +56,8 @@
                 android:id="@+id/infoTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:textSize="12sp"
                 android:textColor="#666666"
                 tools:text="1994 • Драма • 2ч 22мин" />
 
@@ -64,8 +65,7 @@
                 android:id="@+id/descriptionTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:lineSpacingMultiplier="1.2"
+                android:layout_marginTop="12dp"
                 android:textColor="#000000"
                 android:textSize="14sp"
                 tools:text="Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены и её любовника..." />
@@ -73,33 +73,40 @@
         </LinearLayout>
     </ScrollView>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="8dp"
+        android:weightSum="3">
 
         <Button
             android:id="@+id/randomMovieButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="Случайный фильм" />
+            android:layout_marginEnd="4dp"
+            android:textSize="12sp"
+            android:text="Случайный" />
 
         <Button
             android:id="@+id/profileButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:textSize="12sp"
             android:text="Профиль" />
 
         <Button
             android:id="@+id/moreInfoButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
+            android:textSize="12sp"
             android:text="@string/more_info" />
 
     </LinearLayout>

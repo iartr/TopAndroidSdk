@@ -32,7 +32,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_movie_detail)
 
-        // Инициализация ВСЕХ View элементов ПЕРВЫМ делом
+
         titleTextView = findViewById(R.id.titleTextView)
         infoTextView = findViewById(R.id.infoTextView)
         descriptionTextView = findViewById(R.id.descriptionTextView)
@@ -41,7 +41,7 @@ class MovieDetailActivity : AppCompatActivity() {
         moreInfoButton = findViewById(R.id.moreInfoButton)
         profileButton = findViewById(R.id.profileButton)
 
-        // Восстановление состояния
+
         if (savedInstanceState != null) {
             val savedMovieId = savedInstanceState.getInt(KEY_MOVIE_ID, -1)
             if (savedMovieId != -1) {
@@ -50,16 +50,18 @@ class MovieDetailActivity : AppCompatActivity() {
             }
         }
 
-        // Загрузка фильма если не восстановился
+
+
+
         if (currentMovie == null) {
             currentMovie = MovieRepository.getRandomMovie()
             Log.d(TAG, "First launch: loading random movie")
         }
 
-        // Отображение фильма
+
         displayMovie(currentMovie)
 
-        // Настройка обработчиков
+
         setupClickListeners()
         setupRandomButtonListener()
         setupProfileButtonListener()
@@ -95,7 +97,7 @@ class MovieDetailActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // Кнопка "Подробнее" — открывает браузер с Kinopoisk
+
         moreInfoButton.setOnClickListener {
             Log.d(TAG, "More info button clicked")
 
@@ -107,8 +109,7 @@ class MovieDetailActivity : AppCompatActivity() {
                     startActivity(intent)
                     Log.d(TAG, "Opening URL: ${movie.kinopoiskUrl}")
                 } else {
-                    // Нет приложения для обработки — показываем Toast
-                    Toast.makeText(
+                                        Toast.makeText(
                         this,
                         "Нет приложения для открытия ссылки",
                         Toast.LENGTH_SHORT

@@ -1,20 +1,19 @@
 package com.offerfactory.topandroid
 
-/**
- * Репозиторий для работы с профилем пользователя.
- */
+import android.content.Context
+
 object ProfileRepository {
-    var currentProfile: Profile? = null
+    private lateinit var profilePreferences: ProfilePreferences
+
+    fun init(context: Context) {
+        profilePreferences = ProfilePreferences(context)
+    }
 
     fun saveProfile(profile: Profile) {
-        currentProfile = profile
+        profilePreferences.saveProfile(profile)
     }
 
     fun getProfile(): Profile? {
-        return currentProfile
-    }
-
-    fun loadDefaultProfile(): Profile {
-        return MovieRepository.getUserProfile()
+        return profilePreferences.loadProfile()
     }
 }
