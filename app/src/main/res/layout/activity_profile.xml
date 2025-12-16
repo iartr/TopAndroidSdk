@@ -1,23 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Layout для экрана профиля пользователя.
-    
-    TODO (Домашнее задание): Создайте layout для ProfileActivity со следующими элементами:
-    
-    1. Вертикальный LinearLayout (padding 16dp)
-    2. TextView для приветствия "Привет, [Имя]!" (изначально gone)
-    3. EditText для имени (hint: "Введите ваше имя")
-    4. EditText для возраста (hint: "Введите возраст", inputType: number)
-    5. TextView "Любимый жанр"
-    6. Spinner для выбора жанра
-    7. TextView для ошибки жанра (textColor: red, изначально gone)
-    8. EditText для "О себе" (hint: "Расскажите о себе", multiline, minLines: 3)
-    9. Space с layout_weight="1" (для push кнопок вниз)
-    10. TextView для версии приложения
-    11. Горизонтальный LinearLayout с кнопками "Отмена" и "Сохранить"
-    
-    ВАЖНО: Используйте LinearLayout и FrameLayout, НЕ ConstraintLayout!
--->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,24 +7,117 @@
     android:padding="16dp"
     tools:context=".ProfileActivity">
 
-    <!-- TODO: Добавьте TextView для приветствия -->
-    
-    <!-- TODO: Добавьте EditText для имени -->
-    
-    <!-- TODO: Добавьте EditText для возраста -->
-    
-    <!-- TODO: Добавьте TextView "Любимый жанр" -->
-    
-    <!-- TODO: Добавьте Spinner для выбора жанра -->
-    
-    <!-- TODO: Добавьте TextView для ошибки валидации жанра -->
-    
-    <!-- TODO: Добавьте EditText для "О себе" (multiline) -->
-    
-    <!-- TODO: Добавьте Space для push кнопок вниз -->
-    
-    <!-- TODO: Добавьте TextView для версии приложения -->
-    
-    <!-- TODO: Добавьте LinearLayout с кнопками -->
+    <!-- Приветствие (изначально скрыто) -->
+    <TextView
+        android:id="@+id/greetingTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#4CAF50"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        tools:text="Привет, Иван!"
+        tools:visibility="visible" />
+
+    <!-- Поле ввода имени -->
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/name_hint"
+        android:inputType="textPersonName"
+        android:maxLines="1" />
+
+    <!-- Поле ввода возраста -->
+    <EditText
+        android:id="@+id/ageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/age_hint"
+        android:inputType="number"
+        android:maxLines="1" />
+
+    <!-- Метка для Spinner -->
+    <TextView
+        android:id="@+id/genreLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/favorite_genre"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Spinner для выбора жанра -->
+    <Spinner
+        android:id="@+id/genreSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+    <!-- Сообщение об ошибке жанра -->
+    <TextView
+        android:id="@+id/genreErrorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/genre_error"
+        android:textColor="#F44336"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <!-- Поле "О себе" (многострочное) -->
+    <EditText
+        android:id="@+id/aboutEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/about_hint"
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        android:gravity="top|start" />
+
+    <!-- Пространство для push кнопок вниз -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Версия приложения -->
+    <TextView
+        android:id="@+id/versionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="#666666"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"
+        tools:text="Версия приложения: 1.0" />
+
+    <!-- Кнопки "Отмена" и "Сохранить" -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="@string/save"
+            android:enabled="false" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Layout для экрана детальной информации о фильме.
-    
-    Используем комбинацию LinearLayout и FrameLayout для создания структурированного UI:
-    - Внешний LinearLayout (vertical) — основной контейнер
-    - FrameLayout для наложения рейтинга поверх области постера
-    - Вложенный LinearLayout для контента
-    - Горизонтальный LinearLayout для кнопок
-    
-    Обратите внимание на использование:
-    - layout_weight для распределения пространства
-    - padding и margin для отступов
-    - gravity для выравнивания
--->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,25 +6,17 @@
     android:orientation="vertical"
     tools:context=".MovieDetailActivity">
 
-    <!-- 
-        Шапка с областью для постера и рейтингом.
-        FrameLayout позволяет наложить рейтинг поверх фона.
-    -->
+    <!-- Шапка с областью для постера и рейтингом -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="#E0E0E0">
 
-        <!-- Заглушка для постера фильма (в реальном приложении здесь была бы ImageView с картинкой) -->
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#424242" />
 
-        <!-- 
-            Рейтинг фильма в правом верхнем углу.
-            layout_gravity позиционирует элемент внутри FrameLayout.
-        -->
         <TextView
             android:id="@+id/ratingTextView"
             android:layout_width="wrap_content"
@@ -54,17 +32,26 @@
 
     </FrameLayout>
 
-    <!-- 
-        Контент с информацией о фильме.
-        layout_weight="1" заставляет этот LinearLayout занять всё свободное пространство
-        между шапкой и кнопками внизу.
-    -->
+    <!-- Контент с информацией о фильме -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
         android:padding="16dp">
+
+        <!-- НОВОЕ: Приветствие пользователя (изначально скрыто) -->
+        <TextView
+            android:id="@+id/greetingTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#4CAF50"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            tools:text="Привет, Иван!"
+            tools:visibility="visible" />
 
         <!-- Название фильма -->
         <TextView
@@ -99,18 +86,58 @@
 
     </LinearLayout>
 
+    <!-- Кнопки внизу экрана -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Кнопка для открытия браузера с подробной информацией -->
-        <Button
-            android:id="@+id/moreInfoButton"
+        <!-- Первый ряд кнопок -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/more_info" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/randomButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/random_movie" />
+
+            <Button
+                android:id="@+id/moreInfoButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/more_info" />
+
+        </LinearLayout>
+
+        <!-- Второй ряд кнопок: "Другой фильм" и "Профиль" -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/anotherMovieButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Другой фильм" />
+
+            <Button
+                android:id="@+id/profileButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="@string/profile" />
+        </LinearLayout>
 
     </LinearLayout>
 
