@@ -30,6 +30,7 @@ class MovieDetailActivity : AppCompatActivity() {
     private lateinit var anotherMovieButton: Button
     private lateinit var profileButton: Button
     private lateinit var moreInfoButton: Button
+    private lateinit var actorButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +48,7 @@ class MovieDetailActivity : AppCompatActivity() {
         anotherMovieButton = findViewById(R.id.anotherMovieButton)
         profileButton = findViewById(R.id.profileButton)
         moreInfoButton = findViewById(R.id.moreInfoButton)
+        actorButton = findViewById(R.id.actorButton)
 
         // Восстановление состояния или загрузка первого фильма
         currentMovie = if (savedInstanceState != null) {
@@ -185,6 +187,12 @@ class MovieDetailActivity : AppCompatActivity() {
         profileButton.setOnClickListener {
             Log.d(TAG, "Profile button clicked")
             val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        actorButton.setOnClickListener {
+            Log.d(TAG, "Actor button clicked")
+            val intent = Intent(this, ActorDetailActivity::class.java)
             startActivity(intent)
         }
     }

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".ActorDetailActivity">
+
+    <!-- Горизонтальная Guideline для отступа заголовка -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="8dp" />
+
+    <!-- Вертикальная Guideline для области постера -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeftPoster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="0dp" />
+
+    <ImageView
+        android:id="@+id/actorPoster"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/actor_poster_cd"
+        android:background="#E0E0E0"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="3:4"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftPoster"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintWidth_percent="0.35" />
+
+    <!-- Заголовок справа от постера. Используем цепочку для вертикального выравнивания подписи и тэгов. -->
+    <TextView
+        android:id="@+id/actorNameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@id/actorPoster"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintTop_toTopOf="@id/actorPoster"
+        app:layout_goneMarginStart="8dp"
+        android:layout_marginStart="12dp"
+        tools:text="Бредд Питт" />
+
+    <TextView
+        android:id="@+id/actorSubtitleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        app:layout_constraintStart_toStartOf="@id/actorNameText"
+        app:layout_constraintTop_toBottomOf="@id/actorNameText"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="1963 • США" />
+
+    <!-- Барьер по нижнему краю заголовочной области справа -->
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/headerBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="actorSubtitleText" />
+
+    <!-- Блок "Известен по" с 5 текстовыми бейджами (без RecyclerView) -->
+    <TextView
+        android:id="@+id/knownForLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/known_for"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/headerBarrier"
+        app:layout_constraintStart_toStartOf="@id/actorNameText" />
+
+    <!-- Бейджи (TextView), размещаемые через Flow -->
+    <TextView
+        android:id="@+id/knownFor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_chip"
+        android:textColor="#1A237E"
+        tools:text="Бойцовский клуб" />
+
+    <TextView
+        android:id="@+id/knownFor2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_chip"
+        android:textColor="#1A237E"
+        tools:text="Семь" />
+
+    <TextView
+        android:id="@+id/knownFor3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_chip"
+        android:textColor="#1A237E"
+        tools:text="Однажды в… Голливуде" />
+
+    <TextView
+        android:id="@+id/knownFor4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_chip"
+        android:textColor="#1A237E"
+        tools:text="Одиннадцать друзей Оушена" />
+
+    <TextView
+        android:id="@+id/knownFor5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_chip"
+        android:textColor="#1A237E"
+        tools:text="Бенджамин Баттон" />
+
+    <!-- Flow helper: автоматически переносит бейджи на новую строку -->
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/knownForFlow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="knownFor1,knownFor2,knownFor3,knownFor4,knownFor5"
+        app:flow_wrapMode="chain"
+        app:flow_horizontalStyle="packed"
+        app:flow_horizontalBias="0"
+        app:flow_horizontalGap="8dp"
+        app:flow_verticalGap="8dp"
+        app:layout_constraintStart_toStartOf="@id/actorNameText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/knownForLabel" />
+
+    <!-- Биография, прижата ниже секции knownFor (Flow) -->
+    <TextView
+        android:id="@+id/bioLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bio"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/knownForFlow"
+        app:layout_constraintStart_toStartOf="@id/actorNameText" />
+
+    <TextView
+        android:id="@+id/actorBioText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:lineSpacingExtra="2dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/bioLabel"
+        app:layout_constraintStart_toStartOf="@id/actorNameText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        tools:text="Американский актёр и кинопродюсер..." />
+
+    <!-- Нижняя панель с кнопкой -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/openWikiButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/open_in_wiki" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

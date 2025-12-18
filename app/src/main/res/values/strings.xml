@@ -5,6 +5,7 @@
     <!-- MovieDetailActivity -->
     <string name="random_movie">Случайный фильм</string>
     <string name="more_info">Подробнее</string>
+    <string name="actor_card">Карточка актёра</string>
     
     <!-- ProfileActivity -->
     <string name="profile">Профиль</string>
@@ -20,6 +21,14 @@
     <string name="version_format">Версия приложения: %s</string>
     <string name="greeting_format">Привет, %s!</string>
     <string name="favorite_genre">Любимый жанр</string>
+    <string name="no_app_for_link">Нет приложения для открытия ссылки</string>
+
+    <!-- Actor screen -->
+    <string name="actor_poster_cd">Фото актёра</string>
+    <string name="actor_subtitle_format">%1$d • %2$s</string>
+    <string name="known_for">Известен по</string>
+    <string name="bio">Биография</string>
+    <string name="open_in_wiki">Открыть в Википедии</string>
     
     <!-- Genres -->
     <string-array name="genres">
