@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -20,7 +22,6 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private var currentMovie: Movie? = null
 
-    // UI элементы
     private lateinit var greetingTextView: TextView
     private lateinit var titleTextView: TextView
     private lateinit var infoTextView: TextView
@@ -32,13 +33,15 @@ class MovieDetailActivity : AppCompatActivity() {
     private lateinit var moreInfoButton: Button
     private lateinit var actorButton: Button
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate called")
 
         setContentView(R.layout.activity_movie_detail)
 
-        // Инициализация UI элементов
+        // Инициализация UI элементов (ID должны совпадать с новым layout)
         greetingTextView = findViewById(R.id.greetingTextView)
         titleTextView = findViewById(R.id.titleTextView)
         infoTextView = findViewById(R.id.infoTextView)
@@ -50,7 +53,7 @@ class MovieDetailActivity : AppCompatActivity() {
         moreInfoButton = findViewById(R.id.moreInfoButton)
         actorButton = findViewById(R.id.actorButton)
 
-        // Восстановление состояния или загрузка первого фильма
+
         currentMovie = if (savedInstanceState != null) {
             val movieId = savedInstanceState.getInt(KEY_MOVIE_ID, -1)
             Log.d(TAG, "Restoring state: movieId=$movieId")
@@ -115,10 +118,12 @@ class MovieDetailActivity : AppCompatActivity() {
         movie?.let {
             Log.d(TAG, "Displaying movie: ${it.title}")
 
+
             titleTextView.text = it.title
             infoTextView.text = "${it.year} • ${it.genre} • ${it.duration}"
             descriptionTextView.text = it.description
             ratingTextView.text = it.rating.toString()
+
         }
     }
 
@@ -138,24 +143,24 @@ class MovieDetailActivity : AppCompatActivity() {
             displayMovie(currentMovie)
         }
 
-        // ДОМАШНЕЕ ЗАДАНИЕ 1: Кнопка "Другой фильм"
+
         anotherMovieButton.setOnClickListener {
             Log.d(TAG, "Another movie button clicked")
 
             val previousMovie = currentMovie
 
-            // Загружаем другой фильм (гарантированно отличный от текущего)
+
             currentMovie = currentMovie?.let { current ->
                 MovieRepository.getRandomMovieExcluding(current.id)
             } ?: MovieRepository.getRandomMovie()
 
-            // Логируем смену фильма
+
             Log.d(TAG, "Movie changed from '${previousMovie?.title}' to '${currentMovie?.title}'")
 
-            // Обновляем UI
+
             displayMovie(currentMovie)
 
-            // Toast для демонстрации
+
             Toast.makeText(
                 this,
                 "Загружен фильм: ${currentMovie?.title}",

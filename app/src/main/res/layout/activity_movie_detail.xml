@@ -1,160 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MovieDetailActivity">
 
-    <!-- Шапка с областью для постера и рейтингом -->
-    <FrameLayout
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <View
+        android:id="@+id/headerBackground"
+        android:layout_width="0dp"
         android:layout_height="200dp"
-        android:background="#E0E0E0">
+        android:background="#424242"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#424242" />
-
-        <TextView
-            android:id="@+id/ratingTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_margin="16dp"
-            android:background="#CC000000"
-            android:padding="12dp"
-            android:textColor="#FFD700"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            tools:text="9.3" />
-
-    </FrameLayout>
-
-    <!-- Контент с информацией о фильме -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <View
+        android:id="@+id/headerOverlay"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:background="#E0E0E0"
+        app:layout_constraintBottom_toBottomOf="@id/headerBackground"
+        app:layout_constraintEnd_toEndOf="@id/headerBackground"
+        app:layout_constraintStart_toStartOf="@id/headerBackground"
+        app:layout_constraintTop_toTopOf="@id/headerBackground" />
 
-        <!-- НОВОЕ: Приветствие пользователя (изначально скрыто) -->
-        <TextView
-            android:id="@+id/greetingTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="#4CAF50"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone"
-            tools:text="Привет, Иван!"
-            tools:visibility="visible" />
-
-        <!-- Название фильма -->
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            tools:text="Побег из Шоушенка" />
-
-        <!-- Год, жанр, длительность -->
-        <TextView
-            android:id="@+id/infoTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            tools:text="1994 • Драма • 2ч 22мин" />
-
-        <!-- Описание фильма -->
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="14sp"
-            android:textColor="#000000"
-            android:lineSpacingMultiplier="1.2"
-            tools:text="Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены и её любовника..." />
-
-    </LinearLayout>
-
-    <!-- Кнопки внизу экрана -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/ratingTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:background="#CC000000"
+        android:padding="12dp"
+        android:text="9.3"
+        android:textColor="#FFD700"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp" />
 
-        <!-- Первый ряд кнопок -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/randomButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/random_movie" />
-
-            <Button
-                android:id="@+id/moreInfoButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:text="@string/more_info" />
-
-        </LinearLayout>
-
-        <!-- Второй ряд кнопок: "Другой фильм" и "Профиль" -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/anotherMovieButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Другой фильм" />
-
-            <Button
-                android:id="@+id/profileButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:text="@string/profile" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- Третий ряд кнопок: переход к экрану актёра (ConstraintLayout) -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/greetingTextView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="16dp">
+        android:layout_marginTop="16dp"
+        android:text="Привет, Иван!"
+        android:textColor="#4CAF50"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@id/headerBackground"
+        tools:visibility="visible" />
 
-        <Button
-            android:id="@+id/actorButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/actor_card" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="1+1"
+        android:textColor="#000000"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@id/greetingTextView" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/infoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="2011 • Драма, Комедия • 1ч 52мин"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:lineSpacingExtra="4dp"
+        android:text="Пострадав в результате несчастного случая, богатый аристократ Филипп нанимает в помощники человека, который менее всего подходит для этой работы – молодого жителя предместья Дрисса, только что освободившегося из тюрьмы."
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/randomButton"
+        app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@id/infoTextView"
+        app:layout_constrainedHeight="true" />
+
+    <Button
+        android:id="@+id/randomButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:text="Случайный фильм"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@id/anotherMovieButton"
+        app:layout_constraintEnd_toStartOf="@id/moreInfoButton"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
+
+    <Button
+        android:id="@+id/moreInfoButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="Подробнее"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="@id/randomButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/randomButton"
+        app:layout_constraintTop_toTopOf="@id/randomButton" />
+
+    <Button
+        android:id="@+id/anotherMovieButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:text="Другой фильм"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@id/actorButton"
+        app:layout_constraintEnd_toStartOf="@id/profileButton"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/randomButton" />
+
+    <Button
+        android:id="@+id/profileButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="Профиль"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="@id/anotherMovieButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/anotherMovieButton"
+        app:layout_constraintTop_toTopOf="@id/anotherMovieButton" />
+
+
+    <Button
+        android:id="@+id/actorButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="Карточка актёра"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/anotherMovieButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
