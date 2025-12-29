@@ -10,15 +10,15 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 
 class MovieDetailActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MovieDetailActivity"
-        private const val KEY_MOVIE_ID = "movie_id"
     }
 
-    private var currentMovie: Movie? = null
+    private lateinit var viewModel: MovieDetailViewModel
 
     // UI элементы
     private lateinit var greetingTextView: TextView
@@ -38,6 +38,8 @@ class MovieDetailActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_movie_detail)
 
+        viewModel = ViewModelProvider(this)[MovieDetailViewModel::class.java]
+
         // Инициализация UI элементов
         greetingTextView = findViewById(R.id.greetingTextView)
         titleTextView = findViewById(R.id.titleTextView)
@@ -50,25 +52,8 @@ class MovieDetailActivity : AppCompatActivity() {
         moreInfoButton = findViewById(R.id.moreInfoButton)
         actorButton = findViewById(R.id.actorButton)
 
-        // Восстановление состояния или загрузка первого фильма
-        currentMovie = if (savedInstanceState != null) {
-            val movieId = savedInstanceState.getInt(KEY_MOVIE_ID, -1)
-            Log.d(TAG, "Restoring state: movieId=$movieId")
-
-            if (movieId != -1) {
-                MovieRepository.findMovieById(movieId)
-            } else {
-                MovieRepository.getRandomMovie()
-            }
-        } else {
-            Log.d(TAG, "First launch: loading random movie")
-            MovieRepository.getRandomMovie()
-        }
-
-        displayMovie(currentMovie)
+        setupObservers()
         setupClickListeners()
-
-        updateGreeting()
     }
 
     override fun onStart() {
@@ -79,7 +64,7 @@ class MovieDetailActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume called - Activity is now interactive")
-        updateGreeting()
+        viewModel.refreshGreeting()
     }
 
     override fun onPause() {
@@ -102,63 +87,41 @@ class MovieDetailActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
+    private fun setupObservers() {
+        viewModel.movie.observe(this) { movie ->
+            displayMovie(movie)
+        }
 
-        currentMovie?.let {
-            outState.putInt(KEY_MOVIE_ID, it.id)
-            Log.d(TAG, "onSaveInstanceState: saved movieId=${it.id}")
+        viewModel.greetingName.observe(this) { name ->
+            renderGreeting(name)
         }
     }
 
-    private fun displayMovie(movie: Movie?) {
-        movie?.let {
-            Log.d(TAG, "Displaying movie: ${it.title}")
+    private fun displayMovie(movie: Movie) {
+        Log.d(TAG, "Displaying movie: ${movie.title}")
 
-            titleTextView.text = it.title
-            infoTextView.text = "${it.year} • ${it.genre} • ${it.duration}"
-            descriptionTextView.text = it.description
-            ratingTextView.text = it.rating.toString()
-        }
+        titleTextView.text = movie.title
+        infoTextView.text = "${movie.year} • ${movie.genre} • ${movie.duration}"
+        descriptionTextView.text = movie.description
+        ratingTextView.text = movie.rating.toString()
     }
 
     private fun setupClickListeners() {
         // Кнопка "Случайный фильм"
         randomButton.setOnClickListener {
             Log.d(TAG, "Random button clicked")
-
-            val previousMovie = currentMovie
-
-            currentMovie = currentMovie?.let { current ->
-                MovieRepository.getRandomMovieExcluding(current.id)
-            } ?: MovieRepository.getRandomMovie()
-
-            Log.d(TAG, "Changed movie: ${previousMovie?.title} -> ${currentMovie?.title}")
-
-            displayMovie(currentMovie)
+            viewModel.loadRandomMovie()
         }
 
         // ДОМАШНЕЕ ЗАДАНИЕ 1: Кнопка "Другой фильм"
         anotherMovieButton.setOnClickListener {
             Log.d(TAG, "Another movie button clicked")
-
-            val previousMovie = currentMovie
-
-            // Загружаем другой фильм (гарантированно отличный от текущего)
-            currentMovie = currentMovie?.let { current ->
-                MovieRepository.getRandomMovieExcluding(current.id)
-            } ?: MovieRepository.getRandomMovie()
-
-            // Логируем смену фильма
-            Log.d(TAG, "Movie changed from '${previousMovie?.title}' to '${currentMovie?.title}'")
-
-            // Обновляем UI
-            displayMovie(currentMovie)
+            viewModel.loadRandomMovie()
 
             // Toast для демонстрации
             Toast.makeText(
                 this,
-                "Загружен фильм: ${currentMovie?.title}",
+                "Загружен фильм: ${viewModel.movie.value?.title}",
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -167,7 +130,7 @@ class MovieDetailActivity : AppCompatActivity() {
         moreInfoButton.setOnClickListener {
             Log.d(TAG, "More info button clicked")
 
-            currentMovie?.let { movie ->
+            viewModel.movie.value?.let { movie ->
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(movie.kinopoiskUrl))
 
                 try {
@@ -197,12 +160,11 @@ class MovieDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateGreeting() {
-        val profile = ProfileRepository.currentProfile
-        if (profile != null) {
-            greetingTextView.text = getString(R.string.greeting_format, profile.name)
+    private fun renderGreeting(name: String?) {
+        if (name != null) {
+            greetingTextView.text = getString(R.string.greeting_format, name)
             greetingTextView.visibility = View.VISIBLE
-            Log.d(TAG, "Showing greeting for ${profile.name}")
+            Log.d(TAG, "Showing greeting for $name")
         } else {
             greetingTextView.visibility = View.GONE
             Log.d(TAG, "No profile to greet")
