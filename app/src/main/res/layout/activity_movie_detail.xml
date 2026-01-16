@@ -1,117 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Layout для экрана детальной информации о фильме.
-    
-    Используем комбинацию LinearLayout и FrameLayout для создания структурированного UI:
-    - Внешний LinearLayout (vertical) — основной контейнер
-    - FrameLayout для наложения рейтинга поверх области постера
-    - Вложенный LinearLayout для контента
-    - Горизонтальный LinearLayout для кнопок
-    
-    Обратите внимание на использование:
-    - layout_weight для распределения пространства
-    - padding и margin для отступов
-    - gravity для выравнивания
--->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".MovieDetailActivity">
 
-    <!-- 
-        Шапка с областью для постера и рейтингом.
-        FrameLayout позволяет наложить рейтинг поверх фона.
-    -->
-    <FrameLayout
-        android:layout_width="match_parent"
+    <!-- Шапка с постером/фоном и рейтингом -->
+    <View
+        android:id="@+id/headerBase"
+        android:layout_width="0dp"
         android:layout_height="200dp"
-        android:background="#E0E0E0">
+        android:background="#E0E0E0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Заглушка для постера фильма (в реальном приложении здесь была бы ImageView с картинкой) -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#424242" />
-
-        <!-- 
-            Рейтинг фильма в правом верхнем углу.
-            layout_gravity позиционирует элемент внутри FrameLayout.
-        -->
-        <TextView
-            android:id="@+id/ratingTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_margin="16dp"
-            android:background="#CC000000"
-            android:padding="12dp"
-            android:textColor="#FFD700"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            tools:text="9.3" />
-
-    </FrameLayout>
-
-    <!-- 
-        Контент с информацией о фильме.
-        layout_weight="1" заставляет этот LinearLayout занять всё свободное пространство
-        между шапкой и кнопками внизу.
-    -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <View
+        android:id="@+id/headerOverlay"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:background="#424242"
+        app:layout_constraintStart_toStartOf="@id/headerBase"
+        app:layout_constraintEnd_toEndOf="@id/headerBase"
+        app:layout_constraintTop_toTopOf="@id/headerBase"
+        app:layout_constraintBottom_toBottomOf="@id/headerBase" />
 
-        <!-- Название фильма -->
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            tools:text="Побег из Шоушенка" />
-
-        <!-- Год, жанр, длительность -->
-        <TextView
-            android:id="@+id/infoTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            tools:text="1994 • Драма • 2ч 22мин" />
-
-        <!-- Описание фильма -->
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="14sp"
-            android:textColor="#000000"
-            android:lineSpacingMultiplier="1.2"
-            tools:text="Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены и её любовника..." />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/ratingTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_margin="16dp"
+        android:background="#CC000000"
+        android:padding="12dp"
+        android:textColor="#FFD700"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/headerBase"
+        app:layout_constraintEnd_toEndOf="@id/headerBase"
+        tools:text="9.3" />
 
-        <!-- Кнопка для открытия браузера с подробной информацией -->
-        <Button
-            android:id="@+id/moreInfoButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/more_info" />
+    <!-- Контент -->
+    <TextView
+        android:id="@+id/greetingTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBase"
+        tools:text="Привет, Иван!"
+        tools:visibility="visible" />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/greetingTextView"
+        tools:text="Побег из Шоушенка" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/infoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        tools:text="1994 • Драма • 2ч 22мин" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textSize="14sp"
+        android:textColor="#000000"
+        android:lineSpacingMultiplier="1.2"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/infoTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/randomButton"
+        tools:text="Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены и её любовника..." />
+
+    <!-- Ряд 1: Случайный фильм / Подробнее -->
+    <Button
+        android:id="@+id/randomButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/random_movie"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/moreInfoButton"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+        app:layout_constraintHorizontal_chainStyle="spread" />
+
+    <Button
+        android:id="@+id/moreInfoButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/more_info"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/randomButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/randomButton" />
+
+    <!-- Ряд 2: Другой фильм / Профиль -->
+    <Button
+        android:id="@+id/anotherMovieButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Другой фильм"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/profileButton"
+        app:layout_constraintTop_toBottomOf="@id/randomButton"
+        app:layout_constraintHorizontal_chainStyle="spread" />
+
+    <Button
+        android:id="@+id/profileButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/profile"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/anotherMovieButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/anotherMovieButton" />
+
+    <!-- Ряд 3: Карточка актёра -->
+    <Button
+        android:id="@+id/actorButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/actor_card"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/anotherMovieButton"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
