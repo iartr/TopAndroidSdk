@@ -7,20 +7,16 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.offerfactory.topandroid.BuildConfig
 
 class ProfileActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "ProfileActivity"
-
-        // Ключи для сохранения состояния в Bundle
-        private const val KEY_NAME = "name"
-        private const val KEY_AGE = "age"
-        private const val KEY_GENRE_POSITION = "genre_position"
-        private const val KEY_ABOUT = "about"
-
     }
+
+    private lateinit var viewModel: ProfileViewModel
 
     // UI элементы
     private lateinit var greetingTextView: TextView
@@ -34,11 +30,6 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var saveButton: Button
     private lateinit var cancelButton: Button
 
-    // Флаги валидации
-    private var isNameValid = false
-    private var isAgeValid = false
-    private var isGenreValid = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate called")
@@ -48,26 +39,23 @@ class ProfileActivity : AppCompatActivity() {
         // Инициализация UI элементов
         initViews()
 
+        viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
+
         // Настройка Spinner с жанрами
         setupGenreSpinner()
 
+        setupObservers()
+
         // Настройка TextWatcher для валидации
         setupTextWatchers()
+
+        renderInitialForm()
 
         // Настройка обработчиков кликов
         setupClickListeners()
 
         // Установка версии приложения
         versionTextView.text = getString(R.string.version_format, BuildConfig.VERSION_NAME)
-
-        // Восстановление состояния или загрузка сохранённого профиля
-        if (savedInstanceState != null) {
-            // Восстанавливаем несохранённые данные формы после поворота
-            restoreFormState(savedInstanceState)
-        } else {
-            // Загружаем сохранённый профиль из репозитория
-            loadSavedProfile()
-        }
     }
 
     override fun onStart() {
@@ -93,17 +81,6 @@ class ProfileActivity : AppCompatActivity() {
     override fun onDestroy() {
         Log.d(TAG, "onDestroy called")
         super.onDestroy()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        Log.d(TAG, "onSaveInstanceState called")
-
-        // Сохраняем текущие значения полей формы
-        outState.putString(KEY_NAME, nameEditText.text.toString())
-        outState.putString(KEY_AGE, ageEditText.text.toString())
-        outState.putInt(KEY_GENRE_POSITION, genreSpinner.selectedItemPosition)
-        outState.putString(KEY_ABOUT, aboutEditText.text.toString())
     }
 
     private fun initViews() {
@@ -137,19 +114,45 @@ class ProfileActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                // Позиция 0 — это "Выберите жанр" (невалидный выбор)
-                isGenreValid = position != 0
-
-                // Показываем/скрываем ошибку
-                genreErrorTextView.visibility = if (isGenreValid) View.GONE else View.VISIBLE
-
-                updateSaveButtonState()
+                val genre = if (position == 0) null else parent?.getItemAtPosition(position)?.toString()
+                viewModel.onGenreSelected(position, genre)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                isGenreValid = false
-                updateSaveButtonState()
+                viewModel.onGenreSelected(0, null)
             }
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.greetingName.observe(this) { name ->
+            renderGreeting(name)
+        }
+
+        viewModel.isNameValid.observe(this) { isValid ->
+            val name = nameEditText.text.toString()
+            nameEditText.error = if (!isValid && name.isNotEmpty()) {
+                getString(R.string.name_error)
+            } else {
+                null
+            }
+        }
+
+        viewModel.isAgeValid.observe(this) { isValid ->
+            val ageText = ageEditText.text.toString()
+            ageEditText.error = if (!isValid && ageText.isNotEmpty()) {
+                getString(R.string.age_error)
+            } else {
+                null
+            }
+        }
+
+        viewModel.isGenreValid.observe(this) { isValid ->
+            genreErrorTextView.visibility = if (isValid) View.GONE else View.VISIBLE
+        }
+
+        viewModel.isSaveEnabled.observe(this) { enabled ->
+            saveButton.isEnabled = enabled
         }
     }
 
@@ -160,17 +163,7 @@ class ProfileActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                val name = s.toString()
-                isNameValid = validateName(name)
-
-                // Показываем ошибку если невалидно
-                nameEditText.error = if (!isNameValid && name.isNotEmpty()) {
-                    getString(R.string.name_error)
-                } else {
-                    null
-                }
-
-                updateSaveButtonState()
+                viewModel.onNameChanged(s.toString())
             }
         })
 
@@ -180,17 +173,16 @@ class ProfileActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                val ageText = s.toString()
-                isAgeValid = validateAge(ageText)
+                viewModel.onAgeChanged(s.toString())
+            }
+        })
 
-                // Показываем ошибку если невалидно
-                ageEditText.error = if (!isAgeValid && ageText.isNotEmpty()) {
-                    getString(R.string.age_error)
-                } else {
-                    null
-                }
+        aboutEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-                updateSaveButtonState()
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.onAboutChanged(s.toString())
             }
         })
     }
@@ -199,23 +191,12 @@ class ProfileActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             Log.d(TAG, "Save button clicked")
 
-            // Собираем данные из формы
-            val name = nameEditText.text.toString()
-            val age = ageEditText.text.toString().toInt()
-            val genre = genreSpinner.selectedItem.toString()
-            val about = aboutEditText.text.toString()
-
-            // Создаём и сохраняем профиль
-            val profile = UserProfile(name, age, genre, about)
-            ProfileRepository.currentProfile = profile
-
-            Log.d(TAG, "Profile saved: $profile")
-
-            // Показываем Toast
-            Toast.makeText(this, R.string.profile_saved, Toast.LENGTH_SHORT).show()
-
-            // Закрываем Activity
-            finish()
+            val profile = viewModel.saveProfile()
+            if (profile != null) {
+                Log.d(TAG, "Profile saved: $profile")
+                Toast.makeText(this, R.string.profile_saved, Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
 
         cancelButton.setOnClickListener {
@@ -224,57 +205,33 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun validateName(name: String): Boolean {
-        return name.length in 2..40
+    private fun renderGreeting(name: String?) {
+        if (name != null) {
+            greetingTextView.text = getString(R.string.greeting_format, name)
+            greetingTextView.visibility = View.VISIBLE
+        } else {
+            greetingTextView.visibility = View.GONE
+        }
     }
 
-    private fun validateAge(ageText: String): Boolean {
-        val age = ageText.toIntOrNull() ?: return false
-        return age in 10..120
-    }
+    private fun renderInitialForm() {
+        nameEditText.setText(viewModel.name.value.orEmpty())
+        ageEditText.setText(viewModel.ageText.value.orEmpty())
+        aboutEditText.setText(viewModel.about.value.orEmpty())
 
-    private fun updateSaveButtonState() {
-        // Кнопка активна только когда все поля валидны
-        saveButton.isEnabled = isNameValid && isAgeValid && isGenreValid
+        val savedGenrePosition = viewModel.genrePosition.value ?: 0
+        if (savedGenrePosition != 0) {
+            genreSpinner.setSelection(savedGenrePosition)
+            return
+        }
 
-        Log.d(TAG, "Save button state: enabled=${saveButton.isEnabled} " +
-                "(name=$isNameValid, age=$isAgeValid, genre=$isGenreValid)")
-    }
-
-    private fun restoreFormState(savedInstanceState: Bundle) {
-        Log.d(TAG, "Restoring form state from Bundle")
-
-        // Восстанавливаем значения полей
-        val name = savedInstanceState.getString(KEY_NAME, "")
-        val age = savedInstanceState.getString(KEY_AGE, "")
-        val genrePosition = savedInstanceState.getInt(KEY_GENRE_POSITION, 0)
-        val about = savedInstanceState.getString(KEY_ABOUT, "")
-
-        nameEditText.setText(name)
-        ageEditText.setText(age)
-        genreSpinner.setSelection(genrePosition)
-        aboutEditText.setText(about)
-    }
-
-    private fun loadSavedProfile() {
-        // Загружаем сохранённый профиль если есть
-        ProfileRepository.currentProfile?.let { profile ->
-            Log.d(TAG, "Loading saved profile: ${profile.name}")
-
-            nameEditText.setText(profile.name)
-            ageEditText.setText(profile.age.toString())
-            aboutEditText.setText(profile.about)
-
-            // Находим позицию жанра в массиве
+        val savedGenre = viewModel.genre.value
+        if (savedGenre != null) {
             val genres = resources.getStringArray(R.array.genres)
-            val genrePosition = genres.indexOf(profile.genre)
+            val genrePosition = genres.indexOf(savedGenre)
             if (genrePosition >= 0) {
                 genreSpinner.setSelection(genrePosition)
             }
-
-            // Показываем приветствие
-            greetingTextView.text = getString(R.string.greeting_format, profile.name)
-            greetingTextView.visibility = View.VISIBLE
         }
     }
 }

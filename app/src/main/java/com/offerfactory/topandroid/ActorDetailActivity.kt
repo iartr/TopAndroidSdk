@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.ImageView
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 
 class ActorDetailActivity : AppCompatActivity() {
@@ -17,6 +18,8 @@ class ActorDetailActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "ActorDetailActivity"
     }
+
+    private lateinit var viewModel: ActorDetailViewModel
 
     private lateinit var nameText: TextView
     private lateinit var subtitleText: TextView
@@ -29,11 +32,11 @@ class ActorDetailActivity : AppCompatActivity() {
     private lateinit var knownForText5: TextView
     private lateinit var openWikiButton: Button
 
-    private var actor: Actor? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actor_detail)
+
+        viewModel = ViewModelProvider(this)[ActorDetailViewModel::class.java]
 
         nameText = findViewById(R.id.actorNameText)
         subtitleText = findViewById(R.id.actorSubtitleText)
@@ -46,14 +49,13 @@ class ActorDetailActivity : AppCompatActivity() {
         knownForText5 = findViewById(R.id.knownFor5)
         openWikiButton = findViewById(R.id.openWikiButton)
 
-        actor = ActorRepository.getDefaultActor()
-
-        displayActor(actor)
+        viewModel.actor.observe(this) { actor ->
+            displayActor(actor)
+        }
         setupClicks()
     }
 
-    private fun displayActor(actor: Actor?) {
-        actor ?: return
+    private fun displayActor(actor: Actor) {
         Log.d(TAG, "Displaying actor: ${actor.name}")
         nameText.text = actor.name
         subtitleText.text = getString(R.string.actor_subtitle_format, actor.birthYear, actor.country)
@@ -80,7 +82,7 @@ class ActorDetailActivity : AppCompatActivity() {
 
     private fun setupClicks() {
         openWikiButton.setOnClickListener {
-            actor?.let { a ->
+            viewModel.actor.value?.let { a ->
                 Log.d(TAG, "Open wiki clicked: ${a.wikiUrl}")
                 try {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(a.wikiUrl)))
